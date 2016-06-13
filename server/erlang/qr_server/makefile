@@ -2,7 +2,7 @@
 # MAKE FILE FOR QR APPLICATION CONFIG
 ########################################################################################
 TOP = /home/thanhtung/workspace/qr_server
-ERLANG_TOOL = /opt/tools/OTP17
+ERLANG_TOOL = /opt/OTP18
 ########################################################################################
 # DON NOT FIX ME
 ########################################################################################
@@ -10,11 +10,13 @@ RM = rm -rf
 CP = cp
 ERLC = $(ERLANG_TOOL)/bin/erlc
 ERL = $(ERLANG_TOOL)/bin/erl
-ERLCFLAGS = -Wall +debug_info -pa $(TOP)/ebin
+ERLCFLAGS = -Wall +debug_info -pa ebin
 ERLANG_CFLAGS = -I$(ERLANG_TOOL)/lib/erlang/usr/include
-BEAMDIR = $(TOP)/ebin
-APP = $(BEAMDIR)/qr_server.app
-SRC = $(TOP)/src
+EBIN = ebin
+APP = ebin/qr_server.app
+SRC = src
+
+TARGETS_1 = $(ERL_SRC:%.erl=$(EBIN)/%.beam)
 
 ERL_SRC = \
 $(SRC)/qr_app.erl \
@@ -23,18 +25,10 @@ $(SRC)/qr_worker.erl \
 $(SRC)/qr_db.erl \
 $(SRC)/qr_user.erl 
 
-
-ERL_BEAMS = \
-$(BEAMDIR)/qr_app.beam \
-$(BEAMDIR)/qr_sup.beam \
-$(BEAMDIR)/qr_worker.beam \
-$(BEAMDIR)/qr_db.beam \
-$(BEAMDIR)/qr_user.beam 
-
 ########################################################################################
 # MAKE
 ########################################################################################
-all: $(ERL_BEAMS) $(APP)
+all: $(TARGETS_1) $(APP)
 	@echo 'Building target: $@'
 	@echo 'Finished building target: $@'
 	@echo ' '
@@ -48,16 +42,16 @@ $(APP):	qr_server.app
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-$(BEAMDIR)/%.beam: $(SRC)/%.erl
+$(EBIN)/%.beam: %.erl
 	@echo 'Building target: $@'
-	$(ERLC) $(ERLCFLAGS) -o $(BEAMDIR) $<
+	$(ERLC) $(ERLCFLAGS) -o $(EBIN) $<
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 run:
-	$(ERL) $(BEAMDIR)
+	$(ERL) -pa $(EBIN)
 
 clean:
 	@echo 'remove output file'
-	$(RM) $(BEAMDIR)/*.beam
-	$(RM) $(BEAMDIR)/*.app
+	$(RM) ebin/*.beam
+	$(RM) ebin/*.app
