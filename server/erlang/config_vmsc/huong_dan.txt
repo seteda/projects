@@ -1,0 +1,6 @@
+Huong dan
+1: copy thu muc mssng vao /opt/mssng
+2: copy thu muc lixir, nexGen va tuy chinh duong dan trong file /opt/mssng/mssctl
+3: copy cac file service trong service_add_tungnt vao thu muc /etc/rc.d/init.d
+4: thu tu bat cac not
+vem5/6 -> rsm1, rsm2 -> cgf1 -> mss -> vlr (co the cau hinh them sigpr
